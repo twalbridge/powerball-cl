@@ -1,0 +1,173 @@
+Project Description:
+
+I would like to add my favorite 6 numbers to consider for a Powerball entry 
+ticket. The winning ticket will be selected based upon overall popularity.
+
+Application requirements:
+
+Capture the name of the employees entering the number.
+
+The first 5 favorite numbers will need to be in the range of 1 to 69 and 
+unique. The 6th favorite number will need to be in the range 
+of 1 to 26 and flagged as the 6th Powerball number. Keep count of each 
+individual favorite number provided to determine which numbers to use in 
+our final winning number. Retrieve the max count of each unique duplicate 
+number and use them as the Powerball numbers. If there is a tie based on 
+the max counts randomly select the tied number.
+
+Display all entries with their corresponding number entries. 
+
+Display the final Powerball number based on the requirements above.
+
+
+To try this game, cd into the powerball directory and run 'python3 powerball.py'.
+
+
+
+
+Sample output:
+
+
+
+Enter your first name: jerry
+Enter your last name: lewis
+
+       * Jerry please fill out the survey by entring your favorite *       
+     * lottery numbers! The most popular entries will be considered *      
+      * lucky and will therefore be used to purchase one very lucky *      
+     * lottery ticket! The final PowerBall number must be between 1 *      
+     * and 26. All other number selections must be between 1 and 69. *     
+
+                  ** Multiple entries are encouraged! **                   
+
+Select 1st: 12
+Select 2nd: 2
+Select 3rd: 3
+Select 4th: 56
+Select 5th: 67
+Select Power Ball: 6
+--------------------------------------------------------------------------- 
+
+     * Current most popular selection! 28 66 29 14 42 and Powerball 24 *     
+
+ Successfully submitted.
+	Your entry is:
+		12  2  3 56 67 and Powerball  6
+ 
+ 
+
+New entry? ('q' to quit): 
+Enter your first name: sasha
+Enter your last name: cohen
+
+       * Sasha please fill out the survey by entring your favorite *       
+     * lottery numbers! The most popular entries will be considered *      
+      * lucky and will therefore be used to purchase one very lucky *      
+     * lottery ticket! The final PowerBall number must be between 1 *      
+     * and 26. All other number selections must be between 1 and 69. *     
+
+                  ** Multiple entries are encouraged! **                   
+
+Select 1st: 22
+Select 2nd: 33
+Select 3rd: 44
+Select 4th: 56
+Select 5th: 66
+Select Power Ball: 4
+--------------------------------------------------------------------------- 
+
+     * Current most popular selection! 56 47 27 67 15 and Powerball 1 *      
+
+ Successfully submitted.
+	Your entry is:
+		22 33 44 56 66 and Powerball  4
+ 
+ All other entries:
+	Jerry Lewis:
+		12  2  3 56 67 and Powerball  6
+
+New entry? ('q' to quit): 
+Enter your first name: todd
+Enter your last name: walbridge
+
+       * Todd please fill out the survey by entring your favorite *        
+     * lottery numbers! The most popular entries will be considered *      
+      * lucky and will therefore be used to purchase one very lucky *      
+     * lottery ticket! The final PowerBall number must be between 1 *      
+     * and 26. All other number selections must be between 1 and 69. *     
+
+                  ** Multiple entries are encouraged! **                   
+
+Select 1st: 1
+Select 2nd: 2
+Select 3rd: 3
+Select 4th: 4
+Select 5th: 5
+Select Power Ball: 6
+--------------------------------------------------------------------------- 
+
+      * Current most popular selection! 2 3 56 52 25 and Powerball 6 *       
+
+ Successfully submitted.
+	Your entry is:
+		 1  2  3  4  5 and Powerball  6
+ 
+ All other entries:
+	Sasha Cohen:
+		22 33 44 56 66 and Powerball  4
+	Jerry Lewis:
+		12  2  3 56 67 and Powerball  6
+
+New entry? ('q' to quit): 
+Enter your first name: jerry
+Enter your last name: lewis
+
+Select 1st: 12
+Select 2nd: 02
+Select 3rd: 03
+Select 4th: 55
+Select 5th: 66
+Select Power Ball: 2
+--------------------------------------------------------------------------- 
+
+      * Current most popular selection! 2 3 12 66 56 and Powerball 6 *       
+
+ Successfully submitted again.
+	Your entries are:
+		12  2  3 56 67 and Powerball  6
+		12  2  3 55 66 and Powerball  2
+ 
+ All other entries:
+	Sasha Cohen:
+		22 33 44 56 66 and Powerball  4
+	Todd Walbridge:
+		 1  2  3  4  5 and Powerball  6
+
+New entry? ('q' to quit): 
+Enter your first name: sasha
+Enter your last name: cohe
+	Did you mean Sasha Cohen? ('y' to AGREE otherwise press 'Enter'): y
+
+Select 1st: 67
+Select 2nd: 68
+Select 3rd: 69
+Select 4th: 2
+Select 5th: 4
+Select Power Ball: 5
+--------------------------------------------------------------------------- 
+
+       * Current most popular selection! 2 3 4 12 66 and Powerball 6 *       
+
+ Successfully submitted again.
+	Your entries are:
+		22 33 44 56 66 and Powerball  4
+		67 68 69  2  4 and Powerball  5
+ 
+ All other entries:
+	Jerry Lewis:
+		12  2  3 56 67 and Powerball  6
+		12  2  3 55 66 and Powerball  2
+	Todd Walbridge:
+		 1  2  3  4  5 and Powerball  6
+
+New entry? ('q' to quit): 
