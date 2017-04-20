@@ -1,4 +1,3 @@
-import os
 import random
 import operator
 import re
