@@ -62,7 +62,7 @@ def pick_random_balls(fav_list):
         if random_num not in exempt_nums:
             fav_list.append(random_num)
             exempt_nums.append(random_num)
-    return fav_lis
+    return fav_list
 
 ##
 def most_popular_balls(balls):
