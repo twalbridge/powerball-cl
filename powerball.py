@@ -28,7 +28,7 @@ def initial_instructions(name):
     )
     return ""
 
-#####
+
 def sort_nums(unsort_d_list):
     """
     Handles reverse sorting.
@@ -64,7 +64,7 @@ def pick_random_balls(fav_list):
             exempt_nums.append(random_num)
     return fav_list
 
-##
+
 def most_popular_balls(balls):
     """
     Sorts and possibly randomly selects highest ranking duplicate balls.
