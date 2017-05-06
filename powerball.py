@@ -1,3 +1,4 @@
+import sys
 import operator
 import random
 import re
@@ -26,24 +27,7 @@ def initial_instructions(name):
             "* and 26. All other number selections must be between 1 and 69. *", 
             "** Multiple entries are encouraged! **"
     )
-    return ""
-
-
-def sort_nums(unsort_d_list):
-    """
-    Handles reverse sorting.
-
-    >>> sort_nums({1: 4, 2: 1, 3: 3, 4: 7, 5: 2})
-    [(4, 7), (1, 4), (3, 3), (5, 2), (2, 1)]
-
-    >>> sort_nums({17: 48, 27: 11, 35: 3, 41: 7, 65: 8})
-    [(17, 48), (27, 11), (65, 8), (41, 7), (35, 3)]
-    """
-    return sorted(
-        unsort_d_list.items(), 
-        key=operator.itemgetter(1), 
-        reverse=True
-    )
+    return "\n"
 
 
 def pick_random_balls(fav_list):
@@ -107,7 +91,7 @@ def most_popular_balls(balls):
                 return sorted(pick_random_balls(luckiest_list))
         return sorted(luckiest_list)
     else:
-        return sorted(pick_random_balls(luckiest_list))		
+        return sorted(pick_random_balls(luckiest_list))
 
 
 def most_popular_powerball(powerballs, occurences=None):
@@ -173,7 +157,7 @@ def find_all_entries_for_name(full_name, again="", entry="entry is"):
         entry = "entries are"
     numbers = create_ball_choices_str(entries_for_name)
     return "Successfully submitted{}.\n\tYour {}:{}\n".format(
-        again,	
+        again,  
         entry,
         numbers
     )
@@ -183,7 +167,7 @@ def list_all_entries_and_participants(instance_participant, entries_str=""):
     """
     String formats alphabetically all players with their corresponding
     entries.
-    """	
+    """ 
     if len(all_entry_names_and_their_nums) > 1:
         alphabetical_entries = sorted(
             sorted(
@@ -194,7 +178,9 @@ def list_all_entries_and_participants(instance_participant, entries_str=""):
         entries_str = "All other entries:"
         for entry in alphabetical_entries:
             if entry != instance_participant:
-                numbers = create_ball_choices_str(all_entry_names_and_their_nums[entry])
+                numbers = create_ball_choices_str(
+                    all_entry_names_and_their_nums[entry]
+                )
                 entries_str += "\n\t{}:{}".format(
                     entry,
                     numbers
@@ -207,16 +193,18 @@ def controller(play=""):
     Handles general flow.
     """
     while play != "q":
+        sys.stdout.write("\n")
         entry = Entry()
         first_name = entry.clean_name(
             "Enter your first name: "
         )
-        entry.full_name = entry.clean_last_name(
+        full_name = entry.clean_last_name(
             "Enter your last name: ", first_name
         )
+        # Checks for similar name(s) in the event of a mispelled entry
         similar_names = []
         for name in all_entry_names_and_their_nums:
-            ratio = fuzz.ratio(name, entry.full_name)
+            ratio = fuzz.ratio(name, full_name)
             if 70 <= ratio < 100:
                 similar_names.append((name, ratio))
         sorted_similar_names = sorted(
@@ -225,63 +213,73 @@ def controller(play=""):
             reverse=True
         )
         for similar in similar_names:
-            consider = input("\tDid you mean {}? ('y' to AGREE otherwise press 'Enter'): ".format(
-                similar[0]))
+            consider = input(
+                "\tDid you mean {}? ('y' to AGREE otherwise press 'Enter'): ".format(
+                    similar[0])
+            )
             if "y" in consider.casefold():
-                entry.full_name = similar[0]
-        print(initial_instructions(entry.full_name))
-        entry.first_favorite = entry.clean_number(
-            "Select 1st: "
+                full_name = similar[0]
+        # Prints initial game instructons
+        sys.stdout.write(initial_instructions(full_name))
+
+        entries = [
+            "Select 1st: ",
+            "Select 2nd: ",
+            "Select 3rd: ",
+            "Select 4th: ",
+            "Select 5th: ",
+        ]
+
+        entry_list = [entry.clean_number(field) for field in entries]
+
+        power_ball_number = entry.clean_number(
+            "Select Power Ball: ",
+            powerball=True,
+            number_limit = 26
         )
-        entry.second_favorite = entry.clean_number(
-            "Select 2nd: "
-        )
-        entry.third_favorite = entry.clean_number(
-            "Select 3rd: "
-        )
-        entry.fourth_favorite = entry.clean_number(
-            "Select 4th: "
-        )
-        entry.fifth_favorite = entry.clean_number(
-            "Select 5th: "
-        )
-        entry.power_ball_number = entry.clean_power_ball_number(
-            "Select Power Ball: "
-        )
-        for num in entry.picks:
-            if num in list_of_ball_nums:
-                list_of_ball_nums[num] += 1
+
+        entry_list.append(power_ball_number)
+
+        for number in entry.picks:
+            if number in list_of_ball_nums:
+                list_of_ball_nums[number] += 1
             else:
-                list_of_ball_nums.update({num: 1})
-        if entry.power_ball_number in list_of_powerball_nums:
-            list_of_powerball_nums[entry.power_ball_number] += 1
+                list_of_ball_nums.update({number: 1})
+        if power_ball_number in list_of_powerball_nums:
+            list_of_powerball_nums[power_ball_number] += 1
         else:
-            list_of_powerball_nums.update({entry.power_ball_number: 1})
-        balls, powerballs = sort_nums(list_of_ball_nums), sort_nums(list_of_powerball_nums)
-        entries = (
-            entry.first_favorite,
-            entry.second_favorite,
-            entry.third_favorite,
-            entry.fourth_favorite,
-            entry.fifth_favorite,
-            entry.power_ball_number
-        )
-        if entry.full_name in all_entry_names_and_their_nums:
-            all_entry_names_and_their_nums[entry.full_name].append(entries)
+            list_of_powerball_nums.update({power_ball_number: 1})
+        #Handles reverse sorting
+        balls, powerballs = (
+            sorted(
+                list_of_ball_nums.items(), 
+                key=operator.itemgetter(1), 
+                reverse=True
+            ),
+            sorted(
+                list_of_powerball_nums.items(), 
+                key=operator.itemgetter(1), 
+                reverse=True
+            )
+        )        
+        # Brings together multiple entries from the same user.
+        if full_name in all_entry_names_and_their_nums:
+            all_entry_names_and_their_nums[full_name].append(entry_list)
         else:
             all_entry_names_and_their_nums.update(
-                {entry.full_name: [entries]}
+                {full_name: [entry_list]}
             )
-        print(
-            "-" * 75,
-            "\n\n",
-            select_most_popular(balls, powerballs),
-            "\n\n",
-            find_all_entries_for_name(entry.full_name),
-            "\n",
-            list_all_entries_and_participants(entry.full_name),
+        # Prints current most popular balls and final accumulated stats
+        sys.stdout.write(
+            "{}\n\n{}\n\n{}\n{}".format(
+                "-" * 75,
+                select_most_popular(balls, powerballs),
+                find_all_entries_for_name(full_name),
+                list_all_entries_and_participants(full_name)
+            )
         )
-        play = input("\nNew entry? ('q' to quit): ")
+
+        play = input("\n\nNew entry? ('q' to quit): ")
 
 
 class Entry():
@@ -304,54 +302,54 @@ class Entry():
         """
         name_choice = input(name)
         if not only_letters.search(name_choice):
-            print (
-                '\tEnter a valid name. This value must contain only letters.'
+            sys.stderr.write(
+                '\tEnter a valid name. This value must contain only letters.\n'
         )
             return self.clean_name(name)
-        sep = ' '
-        return name_choice.strip().split(sep, 1)[0].capitalize()
+        return name_choice.strip().split(' ', 1)[0].capitalize()
 
     def clean_last_name(self, name, first_name):
         """
         Handles ensuring entry instance uses only letter and is capitalized 
         and looks for a name match.
         """
-        last_name_choice = self.clean_name(name)
         return "{} {}".format(
             first_name, 
-            last_name_choice
+            self.clean_name(name)
         )
 
-    def clean_number(self, fav_selection):
+    def clean_number(self, fav_selection, powerball=False, number_limit=69):
         """
-        Handles checking for duplicated entries instance numbers 1 - 5.
+        Handles checking for duplicated entries for first 5 ball options and 
+        ensuring the number choices are within range.
         """
         fav_number = input(fav_selection)
-        if fav_number.isdigit() and 1 <= int(fav_number) <= 69:
+        if fav_number.isdigit() and 1 <= int(fav_number) <= number_limit:
             fav_number = int(fav_number)
+            if powerball:
+                return fav_number
             if fav_number in self.picks:
-                print('\tDuplicates are not allowed. Try a number other \
-                    than {}'.format(
-                    fav_number)
+                sys.stderr.write(
+                    '\tDuplicates are not allowed. Try a number other than {}\n'.format(
+                        fav_number
+                    )
                 )
-                return self.clean_number(fav_selection)
+                return self.clean_number(
+                    fav_selection
+                )
             self.picks.append(fav_number)
             return fav_number
         else:
-            print('\tEnter a valid number between 1 through 69.')
-            return self.clean_number(fav_selection)
-
-    def clean_power_ball_number(self, fav_selection):
-        """
-        Handles ensuring entry instance is a number and populating the 
-        PowerBall favorites. Then forwards the list to 
-        """
-        power_ball = input(fav_selection)
-        if power_ball.isdigit() and 1 <= int(power_ball) <= 26:
-            return int(power_ball)
-        else:
-            print('\tEnter a valid number between 1 through 26.')
-            return self.clean_power_ball_number(fav_selection)
+            sys.stderr.write(
+                '\tEnter a valid number between 1 through {}.\n'.format(
+                    number_limit
+                )
+            )
+            return self.clean_number(
+                fav_selection, 
+                powerball=powerball, 
+                number_limit=number_limit
+            )
 
 
 if __name__ == "__main__":
