@@ -12,182 +12,6 @@ list_of_powerball_nums = {}
 initial_instructions_list = []
 
 
-def initial_instructions(name):
-    """
-    Initial instructions for first time participants.
-    """
-    if name not in initial_instructions_list:
-        initial_instructions_list.append(name)
-        return "\n{:^75}\n{:^75}\n{:^75}\n{:^75}\n{:^75}\n\n{:^75}\n".format(
-            "* " + name.split()[0] + \
-            " please fill out the survey by entring your favorite *",
-            "* lottery numbers! The most popular entries will be considered *",
-            "* lucky and will therefore be used to purchase one very lucky *",
-            "* lottery ticket! The final PowerBall number must be between 1 *",
-            "* and 26. All other number selections must be between 1 and 69. *", 
-            "** Multiple entries are encouraged! **"
-    )
-    return "\n"
-
-
-def pick_random_balls(fav_list):
-    """
-    Used in the event of less than 5 duplicate ball selection.
-
-    >>> pick_random_balls([4, 1, 3, 5, 2])
-    [4, 1, 3, 5, 2]
-
-    >>> pick_random_balls([4, 55, 32, 5, 56])
-    [4, 55, 32, 5, 56]
-    """
-    exempt_nums = [num for num in fav_list]
-    while len(fav_list) < 5:
-        random_num = random.choice(range(1, 70))
-        if random_num not in exempt_nums:
-            fav_list.append(random_num)
-            exempt_nums.append(random_num)
-    return fav_list
-
-
-def most_popular_balls(balls):
-    """
-    Sorts and possibly randomly selects highest ranking duplicate balls.
-
-    >>> most_popular_balls([(1, 5), (3, 5), (5, 2), (23, 2), (4, 2), (7, 1), (9, 1)])
-    [1, 3, 4, 5, 23]
-
-    >>> most_popular_balls([(1, 5), (3, 4), (5, 4), (23, 2), (4, 2), (7, 1), (9, 1)])
-    [1, 3, 4, 5, 23]
-
-    >>> most_popular_balls([(1, 5), (3, 5), (5, 5), (23, 5), (4, 5), (7, 1), (9, 1)])
-    [1, 3, 4, 5, 23]
-
-    most_popular_balls([(1, 5), (3, 5), (5, 2), (23, 2), (4, 1), (7, 1), (9, 1)])
-    [1, 3, 4, 5, random 1-69 except 1, 3, 4, 5] *needs to be tested with unittest
-
-    most_popular_balls([(1, 5), (3, 5), (5, 5), (23, 5), (4, 5), (7, 5), (9, 5)])
-    [1, 3, 4, 5, 7, 9, 23](possiblities) *needs to be tested with unittest
-    """
-
-    luckiest_list = []
-    temp_list_of_equals = []
-    for num in balls:
-        if num[1] > 1 and len(luckiest_list) < 5:
-            if len(temp_list_of_equals) == 0 or temp_list_of_equals[0][1] == num[1]:
-                temp_list_of_equals.append(num)
-            else:
-                if len(temp_list_of_equals) + len(luckiest_list) <= 5:
-                    luckiest_list += [ball[0] for ball in temp_list_of_equals]
-                    temp_list_of_equals.clear()
-                    temp_list_of_equals.append(num)
-    if len(temp_list_of_equals) > 0:
-        temp_list_of_balls = [ball[0] for ball in temp_list_of_equals]
-        while len(luckiest_list) < 5:
-            if temp_list_of_balls:
-                random_pick = random.choice(temp_list_of_balls)
-                luckiest_list.append(random_pick)
-                temp_list_of_balls.remove(random_pick)
-            else:
-                return sorted(pick_random_balls(luckiest_list))
-        return sorted(luckiest_list)
-    else:
-        return sorted(pick_random_balls(luckiest_list))
-
-
-def most_popular_powerball(powerballs, occurences=None):
-    """
-    Sorts and possibly randomly selects the highest ranking duplicate 
-    powerball.
-
-    >>> most_popular_powerball([(1, 5), (3, 2), (5, 2), (23, 2), (4, 2), (7, 1), (9, 1)], occurences=None)
-    1
-
-    >>> most_popular_powerball([(5, 15), (3, 4), (5, 4), (23, 2), (4, 2), (7, 1), (9, 1)], occurences=None)
-    5
-
-    >>> most_popular_powerball([(23, 7), (3, 5), (5, 5), (23, 5), (4, 5), (7, 1), (9, 1)], occurences=None)
-    23
-
-    most_popular_powerball([(23, 7), (3, 7), (5, 7), (23, 7), (4, 7), (7, 1), (9, 1)], occurences=None)
-    23, 3, 5, 23, 4 (possiblities) *needs to be tested with unittest
-    """
-    popular_powerballs = []
-    for ball in powerballs:
-        if ball[1] > 1:
-            if occurences == None or ball[1] == occurences:
-                popular_powerballs.append(ball[0])
-                occurences = ball[1]
-    if len(popular_powerballs) > 0:
-        return random.choice(popular_powerballs)
-    return random.choice(range(1, 27))
-
-
-def select_most_popular(balls, powerballs):
-    """
-    String formats final selection.
-    """
-    selection = "* Current most popular selection! {d[0]} {d[1]} {d[2]} {d[3]} {d[4]} and Powerball {p} *".format(
-        d=most_popular_balls(balls),
-        p=most_popular_powerball(powerballs)
-    )
-    return "{:^75}".format(selection)
-
-
-def create_ball_choices_str(entries_for_name):
-    """
-    String formats entry(ies) per player.
-    """
-    return ''.join([
-        "\n\t\t{d[0]:>2} {d[1]:>2} {d[2]:>2} {d[3]:>2} {d[4]:>2} and Powerball {p[0]:>2}".format(
-            d=sorted(ball_list[:5]),
-            p=ball_list[5:]
-        )
-        for ball_list in entries_for_name
-        ]
-    )
-
- 
-def find_all_entries_for_name(full_name, again="", entry="entry is"):
-    """
-    String formats instance player's selection(s).
-    """
-    entries_for_name = all_entry_names_and_their_nums[full_name]
-    if len(entries_for_name) > 1:
-        again = " again"
-        entry = "entries are"
-    numbers = create_ball_choices_str(entries_for_name)
-    return "Successfully submitted{}.\n\tYour {}:{}\n".format(
-        again,  
-        entry,
-        numbers
-    )
-
-
-def list_all_entries_and_participants(instance_participant, entries_str=""):
-    """
-    String formats alphabetically all players with their corresponding
-    entries.
-    """ 
-    if len(all_entry_names_and_their_nums) > 1:
-        alphabetical_entries = sorted(
-            sorted(
-                all_entry_names_and_their_nums
-            ), 
-            key=lambda n: n.split()[1]
-        )
-        entries_str = "All other entries:"
-        for entry in alphabetical_entries:
-            if entry != instance_participant:
-                numbers = create_ball_choices_str(
-                    all_entry_names_and_their_nums[entry]
-                )
-                entries_str += "\n\t{}:{}".format(
-                    entry,
-                    numbers
-                )
-    return entries_str
-
-
 def controller(play=""):
     """
     Handles general flow.
@@ -220,7 +44,7 @@ def controller(play=""):
             if "y" in consider.casefold():
                 full_name = similar[0]
         # Prints initial game instructons
-        sys.stdout.write(initial_instructions(full_name))
+        sys.stdout.write(entry.initial_instructions(full_name))
 
         entries = [
             "Select 1st: ",
@@ -273,9 +97,9 @@ def controller(play=""):
         sys.stdout.write(
             "{}\n\n{}\n\n{}\n{}".format(
                 "-" * 75,
-                select_most_popular(balls, powerballs),
-                find_all_entries_for_name(full_name),
-                list_all_entries_and_participants(full_name)
+                entry.select_most_popular(balls, powerballs),
+                entry.find_all_entries_for_name(full_name),
+                entry.list_all_entries_and_participants(full_name)
             )
         )
 
@@ -350,6 +174,180 @@ class Entry():
                 powerball=powerball, 
                 number_limit=number_limit
             )
+
+    def initial_instructions(self, name):
+        """
+        Initial instructions for first time participants.
+        """
+        if name not in initial_instructions_list:
+            initial_instructions_list.append(name)
+            return "\n{:^75}\n{:^75}\n{:^75}\n{:^75}\n{:^75}\n\n{:^75}\n".format(
+                "* " + name.split()[0] + \
+                " please fill out the survey by entring your favorite *",
+                "* lottery numbers! The most popular entries will be considered *",
+                "* lucky and will therefore be used to purchase one very lucky *",
+                "* lottery ticket! The final PowerBall number must be between 1 *",
+                "* and 26. All other number selections must be between 1 and 69. *", 
+                "** Multiple entries are encouraged! **"
+        )
+        return "\n"
+
+    def pick_random_balls(self, fav_list):
+        """
+        Used in the event of less than 5 duplicate ball selection.
+
+        >>> entry = Entry()
+
+        >>> entry.pick_random_balls([4, 1, 3, 5, 2])
+        [4, 1, 3, 5, 2]
+
+        >>> entry.pick_random_balls([4, 55, 32, 5, 56])
+        [4, 55, 32, 5, 56]
+        """
+        exempt_nums = [num for num in fav_list]
+        while len(fav_list) < 5:
+            random_num = random.choice(range(1, 70))
+            if random_num not in exempt_nums:
+                fav_list.append(random_num)
+                exempt_nums.append(random_num)
+        return fav_list
+
+    def most_popular_balls(self, balls):
+        """
+        Sorts and possibly randomly selects highest ranking duplicate balls.
+
+        >>> entry = Entry()
+
+        >>> entry.most_popular_balls([(1, 5), (3, 5), (5, 2), (23, 2), (4, 2), (7, 1), (9, 1)])
+        [1, 3, 4, 5, 23]
+
+        >>> entry.most_popular_balls([(1, 5), (3, 4), (5, 4), (23, 2), (4, 2), (7, 1), (9, 1)])
+        [1, 3, 4, 5, 23]
+
+        >>> entry.most_popular_balls([(1, 5), (3, 5), (5, 5), (23, 5), (4, 5), (7, 1), (9, 1)])
+        [1, 3, 4, 5, 23]
+
+        entry.most_popular_balls([(1, 5), (3, 5), (5, 2), (23, 2), (4, 1), (7, 1), (9, 1)])
+        [1, 3, 4, 5, random 1-69 except 1, 3, 4, 5] *needs to be tested with unittest
+
+        entry.most_popular_balls([(1, 5), (3, 5), (5, 5), (23, 5), (4, 5), (7, 5), (9, 5)])
+        [1, 3, 4, 5, 7, 9, 23](possiblities) *needs to be tested with unittest
+        """
+
+        luckiest_list = []
+        temp_list_of_equals = []
+        for num in balls:
+            if num[1] > 1 and len(luckiest_list) < 5:
+                if len(temp_list_of_equals) == 0 or temp_list_of_equals[0][1] == num[1]:
+                    temp_list_of_equals.append(num)
+                else:
+                    if len(temp_list_of_equals) + len(luckiest_list) <= 5:
+                        luckiest_list += [ball[0] for ball in temp_list_of_equals]
+                        temp_list_of_equals.clear()
+                        temp_list_of_equals.append(num)
+        if len(temp_list_of_equals) > 0:
+            temp_list_of_balls = [ball[0] for ball in temp_list_of_equals]
+            while len(luckiest_list) < 5:
+                if temp_list_of_balls:
+                    random_pick = random.choice(temp_list_of_balls)
+                    luckiest_list.append(random_pick)
+                    temp_list_of_balls.remove(random_pick)
+                else:
+                    return sorted(self.pick_random_balls(luckiest_list))
+            return sorted(luckiest_list)
+        else:
+            return sorted(self.pick_random_balls(luckiest_list))
+
+    def most_popular_powerball(self, powerballs, occurences=None):
+        """
+        Sorts and possibly randomly selects the highest ranking duplicate 
+        powerball.
+
+        >>> entry = Entry()
+
+        >>> entry.most_popular_powerball([(1, 5), (3, 2), (5, 2), (23, 2), (4, 2), (7, 1), (9, 1)], occurences=None)
+        1
+
+        >>> entry.most_popular_powerball([(5, 15), (3, 4), (5, 4), (23, 2), (4, 2), (7, 1), (9, 1)], occurences=None)
+        5
+
+        >>> entry.most_popular_powerball([(23, 7), (3, 5), (5, 5), (23, 5), (4, 5), (7, 1), (9, 1)], occurences=None)
+        23
+
+        entry.most_popular_powerball([(23, 7), (3, 7), (5, 7), (23, 7), (4, 7), (7, 1), (9, 1)], occurences=None)
+        23, 3, 5, 23, 4 (possiblities) *needs to be tested with unittest
+        """
+        popular_powerballs = []
+        for ball in powerballs:
+            if ball[1] > 1:
+                if occurences == None or ball[1] == occurences:
+                    popular_powerballs.append(ball[0])
+                    occurences = ball[1]
+        if len(popular_powerballs) > 0:
+            return random.choice(popular_powerballs)
+        return random.choice(range(1, 27))
+
+    def select_most_popular(self, balls, powerballs):
+        """
+        String formats final selection.
+        """
+        selection = "* Current most popular selection! {d[0]} {d[1]} {d[2]} {d[3]} {d[4]} and Powerball {p} *".format(
+            d=self.most_popular_balls(balls),
+            p=self.most_popular_powerball(powerballs)
+        )
+        return "{:^75}".format(selection)
+
+    def create_ball_choices_str(self, entries_for_name):
+        """
+        String formats entry(ies) per player.
+        """
+        return ''.join([
+            "\n\t\t{d[0]:>2} {d[1]:>2} {d[2]:>2} {d[3]:>2} {d[4]:>2} and Powerball {p[0]:>2}".format(
+                d=sorted(ball_list[:5]),
+                p=ball_list[5:]
+            )
+            for ball_list in entries_for_name
+            ]
+        )
+
+    def find_all_entries_for_name(self, full_name, again="", entry="entry is"):
+        """
+        String formats instance player's selection(s).
+        """
+        entries_for_name = all_entry_names_and_their_nums[full_name]
+        if len(entries_for_name) > 1:
+            again = " again"
+            entry = "entries are"
+        numbers = self.create_ball_choices_str(entries_for_name)
+        return "Successfully submitted{}.\n\tYour {}:{}\n".format(
+            again,  
+            entry,
+            numbers
+        )
+
+    def list_all_entries_and_participants(self, instance_participant, entries_str=""):
+        """
+        String formats alphabetically all players with their corresponding
+        entries.
+        """ 
+        if len(all_entry_names_and_their_nums) > 1:
+            alphabetical_entries = sorted(
+                sorted(
+                    all_entry_names_and_their_nums
+                ), 
+                key=lambda n: n.split()[1]
+            )
+            entries_str = "All other entries:"
+            for entry in alphabetical_entries:
+                if entry != instance_participant:
+                    numbers = self.create_ball_choices_str(
+                        all_entry_names_and_their_nums[entry]
+                    )
+                    entries_str += "\n\t{}:{}".format(
+                        entry,
+                        numbers
+                    )
+        return entries_str
 
 
 if __name__ == "__main__":
