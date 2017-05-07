@@ -118,7 +118,6 @@ class Entry():
         super(Entry, self).__init__(*args, **kwargs)
         self.picks = []
 
-
     def clean_name(self, name):
         """
         Handles ensuring entry instance uses only letters, is only one name 
