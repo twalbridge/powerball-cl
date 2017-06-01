@@ -53,11 +53,11 @@ Select 5th: 67
 Select Power Ball: 6
 --------------------------------------------------------------------------- 
 
-     * Current most popular selection! 28 66 29 14 42 and Powerball 24 *     
+     * Current most popular selection! 14 28 29 42 66 and Powerball 24 *     
 
  Successfully submitted.
 	Your entry is:
-		12  2  3 56 67 and Powerball  6
+		 2  3 12 56 67 and Powerball  6
  
  
 
@@ -81,7 +81,7 @@ Select 5th: 66
 Select Power Ball: 4
 --------------------------------------------------------------------------- 
 
-     * Current most popular selection! 56 47 27 67 15 and Powerball 1 *      
+     * Current most popular selection! 15 27 47 56 67 and Powerball 1 *      
 
  Successfully submitted.
 	Your entry is:
@@ -89,7 +89,7 @@ Select Power Ball: 4
  
  All other entries:
 	Jerry Lewis:
-		12  2  3 56 67 and Powerball  6
+		 2  3 12 56 67 and Powerball  6
 
 New entry? ('q' to quit): 
 Enter your first name: todd
@@ -111,7 +111,7 @@ Select 5th: 5
 Select Power Ball: 6
 --------------------------------------------------------------------------- 
 
-      * Current most popular selection! 2 3 56 52 25 and Powerball 6 *       
+      * Current most popular selection! 2 3 25 52 56 and Powerball 6 *       
 
  Successfully submitted.
 	Your entry is:
@@ -121,7 +121,7 @@ Select Power Ball: 6
 	Sasha Cohen:
 		22 33 44 56 66 and Powerball  4
 	Jerry Lewis:
-		12  2  3 56 67 and Powerball  6
+		 2  3 12 56 67 and Powerball  6
 
 New entry? ('q' to quit): 
 Enter your first name: jerry
@@ -135,12 +135,12 @@ Select 5th: 66
 Select Power Ball: 2
 --------------------------------------------------------------------------- 
 
-      * Current most popular selection! 2 3 12 66 56 and Powerball 6 *       
+      * Current most popular selection! 2 3 12 56 66 and Powerball 6 *       
 
  Successfully submitted again.
 	Your entries are:
-		12  2  3 56 67 and Powerball  6
-		12  2  3 55 66 and Powerball  2
+		 2  3 12 56 67 and Powerball  6
+		 2  3 12 55 66 and Powerball  2
  
  All other entries:
 	Sasha Cohen:
@@ -166,12 +166,12 @@ Select Power Ball: 5
  Successfully submitted again.
 	Your entries are:
 		22 33 44 56 66 and Powerball  4
-		67 68 69  2  4 and Powerball  5
+		 2  4 67 68 69 and Powerball  5
  
  All other entries:
 	Jerry Lewis:
-		12  2  3 56 67 and Powerball  6
-		12  2  3 55 66 and Powerball  2
+		 2  3 12 56 67 and Powerball  6
+		 2  3 12 55 66 and Powerball  2
 	Todd Walbridge:
 		 1  2  3  4  5 and Powerball  6
 
