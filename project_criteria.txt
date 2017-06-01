@@ -12,10 +12,15 @@ unique. The 6th favorite number will need to be in the range
 of 1 to 26 and flagged as the 6th Powerball number. Keep count of each 
 individual favorite number provided to determine which numbers to use in 
 our final winning number. Retrieve the max count of each unique duplicate 
-number and use them as the Powerball numbers. If there is a tie based on 
-the max counts randomly select the tied number.
+number and use them as the Powerball numbers. Only duplicate entries will 
+be used in the selection process and entry selection priority will be based 
+on highest max counts. If there is a tie based on the max counts randomly 
+select the tied number.
 
-Display all entries with their corresponding number entries. 
+Display all entry names with their corresponding number entries sorted 
+lowest to highest.
+
+Individual players may play as multiple times.
 
 Display the final Powerball number based on the requirements above.
 
