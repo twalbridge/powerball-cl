@@ -106,7 +106,7 @@ def controller(play=""):
         play = input("\n\nNew entry? ('q' to quit): ")
 
 
-class Entry():
+class Entry:
     """
     For each entry instance: Handles ensuring that the exceptable inputs 
     are valid. First name and last name are first letter capitalized only 
